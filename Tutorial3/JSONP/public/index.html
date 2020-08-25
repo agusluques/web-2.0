@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<HTML>
+<BODY>
+	<p><button type="button" id="button" onclick="startFetch()">Fetch</button></p>
+  	<p><textarea id="textbox" style="width:350px; height:150px"></textarea></p>
+  
+	<script type="text/javascript">
+	    
+	    var textbox = document.getElementById("textbox");
+	    var button = document.getElementById("button");
+	    var tempscript = null;
+	    
+	    function startFetch() {
+			if (tempscript) return; // a fetch is already in progress
+			
+			button.disabled = true;
+			button.style.cursor = "wait";
+			
+			tempscript = document.createElement("script");
+			tempscript.type = "text/javascript";
+			tempscript.id = "tempscript";
+			tempscript.src = "http://localhost:3000/JSONP?callback=onFetchComplete"
+			document.body.appendChild(tempscript);
+			// onFetchComplete invoked when finished
+	    }
+	    
+	    function onFetchComplete(data) {
+			document.body.removeChild(tempscript);
+			tempscript = null
+			var s = '';
+			for (var i = 0; i < data.people.length; i++) {
+			 	s += data.people[i].name + '\n';
+			}
+			textbox.value = s;
+			button.disabled = false;
+			button.style.cursor = "auto";
+			
+	    }
+	    
+	</script>
+    
+</BODY></HTML>

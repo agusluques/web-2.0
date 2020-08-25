@@ -1,0 +1,23 @@
+{
+  "name": "homework5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pull_redis": "docker pull redis",
+    "start_redis_server": "docker run -d --name redis1 -p 6379:6379 redis",
+    "start_redis_client": "chmod +x docker_client.sh && ./docker_client.sh",
+    "start_node_client": "node index.js",
+    "dbuild": "docker build -t homework5 .",
+    "drun": "docker run -p 8888:8080 -d -it --link redis1:redis --name homework5 homework5",
+    "run_all": "npm run start_redis_server && npm run start_redis_client && npm run dbuild && npm run drun",
+    "clean_run_all": "docker rm --force $(docker ps -a -q) && npm run start_redis_server && npm run start_redis_client && npm run dbuild && npm run drun",
+    "run_test": "chmod +x tests.sh && ./tests.sh"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "redis": "^2.8.0"
+  }
+}

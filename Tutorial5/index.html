@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+function poll(token){
+	setTimeout(function(){
+		$.get("/messages", 'token='+ token ).done(function(msg){
+			if (msg.length != 0) {
+				for (var i = 0; i < msg.length; i++) {
+					$('#list').prepend($('<li>').append(JSON.stringify(msg[i])));
+				}
+				
+			}
+			poll(token);
+		});
+	}, 1000);
+};
+$(document).ready(function(){
+	function getRandomToken() {
+	    // E.g. 8 * 32 = 256 bits token
+	    var randomPool = new Uint8Array(32);
+	    crypto.getRandomValues(randomPool);
+	    var hex = '';
+	    for (var i = 0; i < randomPool.length; ++i) {
+	        hex += randomPool[i].toString(16);
+	    }
+	    // E.g. db18458e2782b2b77e36769c569e263a53885a9944dd0a861e5064eac16f1a
+	    return hex;
+	}
+	token = getRandomToken();
+	poll(token);
+	$("#button" ).click(function() {
+  		$.post('/messages', JSON.stringify({ message: $("#message").val(), token: token}), function(response) {}, 'json');
+	});
+});
+</script>
+</head>
+<body>
+	<div>
+		<input id="message" type="text" name="message"><input id="button" type="button" value="Send">
+	</div>
+	<ul id="list"></ul>
+</body>
+</html>

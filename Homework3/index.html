@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="http://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.js"></script>
+</head>
+<body>
+
+<h2>Homework 3 - Download Big File</h2>
+
+<button onclick="loadDoc('testfile')">Get Big File</button>
+
+<script>
+function loadDoc(url) {
+  var xhttp = new XMLHttpRequest();
+  var downloading = false;
+  xhttp.onreadystatechange = function() {
+    console.log(this.readyState)
+    switch(this.readyState){
+      case 1:
+        $.blockUI({ message: 'Loading' });
+        break;
+      case 2:
+        $.blockUI({ message: 'Loaded' });
+        break;
+      case 3:
+        if (!downloading) {
+          $.blockUI({ message: 'Downloading' });
+          downloading = true;
+        }
+        break;
+      case 4:
+        $.blockUI({ message: 'Downloaded' });
+
+        // will show the "Downloaded" message for 1 sec
+        setTimeout(()=>$.unblockUI(), 1000);
+        break;
+    }
+  };
+
+  // this will set readyState to 1
+  xhttp.open("GET", url, true);
+
+  // this will set readyState to 2 after 3 sec
+  setTimeout(()=>xhttp.send(), 3000);
+}
+</script>
+
+</body>
+</html>

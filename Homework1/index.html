@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <div>
+      <form action="/action_page.php">
+      Ingredients separated with comma<br>
+      <input type="text" id="ingredients">
+      <br>
+      Name of the food<br>
+      <input type="text" id="food">
+      <br><br>
+      <input type="button" onclick="puppySearch()" value="Search Recipe Puppy">
+      </form> 
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+    function puppySearch(){
+    var ing = $('#ingredients').val();
+    var food = $('#food').val();
+    google.script.run.puppySearch(ing, food);
+    }
+    </script>
+  </body>
+</html>
+
+
